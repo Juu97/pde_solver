@@ -16,6 +16,10 @@ public:
         : nx_(nx), ny_(ny), nt_(nt), data_(nt, std::vector<double>(nx * ny)) {}
 
     UnknownField2D(UnknownField2D&& other) noexcept;
+    UnknownField2D& operator=(UnknownField2D&& other) noexcept;
+
+    UnknownField2D(const UnknownField2D&) = delete;
+    UnknownField2D& operator=(const UnknownField2D&) = delete;
 
     double& operator()(size_t x, size_t y, size_t t);
     const double& operator()(size_t x, size_t y, size_t t) const;

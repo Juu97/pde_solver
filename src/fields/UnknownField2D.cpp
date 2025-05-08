@@ -8,6 +8,15 @@ UnknownField2D::UnknownField2D(UnknownField2D&& other) noexcept {
     data_ = std::move(other.data_);
 }
 
+UnknownField2D& UnknownField2D::operator=(UnknownField2D&& other) noexcept {
+    if (this != &other) {
+        nx_ = other.nx_;
+        ny_ = other.ny_;
+        nt_ = other.nt_;
+        data_ = std::move(other.data_);
+    }
+    return *this;
+}
 
 // Deve ritornare una referenza? non basta T?
 // => permette di fare field(i,j,n) = 4. ed è più efficiente (no copie)

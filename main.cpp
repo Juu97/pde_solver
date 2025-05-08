@@ -36,7 +36,15 @@ int main() {
     double total_time = 1;
 
     // Solver engine
-    SolverEngine2D solver(*grid, *equation, *boundary, *integrator, *initial_condition, dt, total_time);
+    SolverEngine2D solver(
+        std::move(grid),
+        std::move(boundary),
+        std::move(equation),
+        std::move(initial_condition),
+        std::move(integrator),
+        dt,
+        total_time
+    );
 
     // Run simulation
     solver.run();

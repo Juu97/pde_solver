@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 #include "boundaries/IBoundaryHandler2D.hpp"
 #include "equations/IEquationSystem.hpp"
@@ -10,36 +11,42 @@
 
 class SolverEngine2D {
 private:
-    const IGrid2D& grid_;
     double dt_;
     double totalTime_;
-    IBoundaryHandler2D& boundary_;
-    IEquationSystem& equation_;
-    InitialCondition2D& initial_;
-    ITimeIntegrator2D& integrator_;
+
+    std::unique_ptr<IGrid2D> grid_;
+    std::unique_ptr<IBoundaryHandler2D> boundary_;
+    std::unique_ptr<IEquationSystem> equation_;
+    std::unique_ptr<InitialCondition2D> initial_;
+    std::unique_ptr<ITimeIntegrator2D> integrator_;
+
     UnknownField2D u_;
 
 public:
     SolverEngine2D(
-        const IGrid2D& grid,
-        IEquationSystem& equation,
-        IBoundaryHandler2D& boundary,
-        ITimeIntegrator2D& integrator,
-        InitialCondition2D& initial,
+        std::unique_ptr<IGrid2D> grid,
+        std::unique_ptr<IBoundaryHandler2D> boundary,
+        std::unique_ptr<IEquationSystem> equation,
+        std::unique_ptr<InitialCondition2D> initial,
+        std::unique_ptr<ITimeIntegrator2D> integrator,
         double dt,
         double totalTime
-    )
-    : grid_(grid),
-    u_(grid.getNx(), grid.getNy(), static_cast<std::size_t>(totalTime / dt) + 1),
-    equation_(equation),
-    boundary_(boundary),
-    integrator_(integrator),
-    initial_(initial),
-    dt_(dt),
-    totalTime_(totalTime)
-    {}
+        )
+            : grid_(std::move(grid)),
+            boundary_(std::move(boundary)),
+            equation_(std::move(equation)),
+            initial_(std::move(initial)),
+            integrator_(std::move(integrator)),
+            dt_(dt),
+            totalTime_(totalTime),
+            u_(0, 0, 0)
+        {
+            u_ = std::move(UnknownField2D(grid_->getNx(), grid_->getNy(),
+                                static_cast<std::size_t>(totalTime_ / dt_) + 1));
+        }
 
     void run();
     const UnknownField2D& getSolution() const {return u_;};
+    void exportAllStatesCSV(const std::string& filename) const;
 
 };
