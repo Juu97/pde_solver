@@ -41,6 +41,7 @@
         "string": "cpp",
         "string_view": "cpp",
         "variant": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "cassert": "cpp"
     }
 }

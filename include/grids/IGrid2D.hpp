@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstddef>
-#include "include/Coordinates2D.hpp"
+#include "Coordinates2D.hpp"
 
 class IGrid2D{
 public:
