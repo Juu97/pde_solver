@@ -6,7 +6,6 @@
 class Grid2DUniform : public IGrid2D {
 private:
     std::vector<Coordinates2D> coordinates_;
-    std::size_t nx_, ny_;
     double x0_, y0_;
 
 public:

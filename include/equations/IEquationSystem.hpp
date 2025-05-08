@@ -1,11 +1,12 @@
-// include/equations/EquationSystem.hpp
+// include/equations/IEquationSystem.hpp
+
 #pragma once
 #include "fields/UnknownField2D.hpp"
 #include "grids/IGrid2D.hpp"
 
-class EquationSystem {
+class IEquationSystem {
 public:
-    virtual ~EquationSystem() = default;
+    virtual ~IEquationSystem() = default;
 
     // Spatial term on t
     virtual void computeSpatialOperator(

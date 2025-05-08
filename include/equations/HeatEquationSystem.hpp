@@ -1,9 +1,9 @@
 // include/equations/HeatEquationSystem.hpp
 #pragma once
-#include "EquationSystem.hpp"
+#include "IEquationSystem.hpp"
 
 
-class HeatEquationSystem : public EquationSystem {
+class HeatEquationSystem : public IEquationSystem {
 private:
     double alpha_;
 
@@ -16,4 +16,5 @@ public:
         const IGrid2D& grid,
         std::size_t tIdx
     ) const override;
+
 };
