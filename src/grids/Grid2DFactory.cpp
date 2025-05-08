@@ -1,5 +1,5 @@
-#include "Grid2DFactory.hpp"
-#include "Grid2DUniform.hpp"
+#include "grids/Grid2DFactory.hpp"
+#include "grids/Grid2DUniform.hpp"
 #include "Logger.hpp"
 
 std::unique_ptr<IGrid2D> Grid2DFactory::create(Grid2DType type)

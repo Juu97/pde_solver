@@ -1,29 +1,30 @@
-#include "Grid2DUniform.hpp"
-Grid2DUniform::Grid2DUniform(double Lx, double Ly, int nx, int ny, int x0, int y0)
-{
+// src/grids/Grid2DUniform.cpp
+#include "grids/Grid2DUniform.hpp"
 
-    double dx = Lx / (double) (nx-1);
-    double dy = Ly / (double) (ny-1);
+Grid2DUniform::Grid2DUniform(double Lx, double Ly, std::size_t nx, std::size_t ny, double x0, double y0)
+{
+    dx_ = Lx / static_cast<double>(nx - 1);
+    dy_ = Ly / static_cast<double>(ny - 1);
 
     nx_ = nx;
     ny_ = ny;
     x0_ = x0;
     y0_ = y0;
-    dx_ = dx;
-    dy_ = dy;
     coordinates_.resize(nx * ny);
 
-    for (std::size_t i = 0; i < nx; ++i) {
-        for (std::size_t j = 0; j < ny; ++j) {
-            double x = x0 + i * dx;
-            double y = y0 + j * dy;
-            coordinates_[i * ny + j] = {x, y};
+    for (std::size_t j = 0; j < ny_; ++j) {
+        for (std::size_t i = 0; i < nx_; ++i) {
+            double x = x0_ + i * dx_;
+            double y = y0_ + j * dy_;
+            coordinates_[j * nx_ + i] = {x, y};
         }
     }
 }
 
 Coordinates2D Grid2DUniform::getCoordinates(std::size_t i, std::size_t j) const
 {
-    std::size_t idx = i * ny_ + j;
-    return coordinates_[idx];
+    if (i >= nx_ || j >= ny_) {
+        throw std::out_of_range("Grid2DUniform::getCoordinates - index out of bounds");
+    }
+    return coordinates_[j * nx_ + i];
 }

@@ -4,8 +4,7 @@ project(pde_solver)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(include)
-include_directories(include/grids)
-include_directories(include/fields)
+include_directories(include/*.hpp)
 
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
