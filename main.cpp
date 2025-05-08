@@ -21,19 +21,19 @@ int main() {
     std::unique_ptr<InitialCondition2D> initial_condition = std::make_unique<InitialCondition2D>(g_x);
 
     // Boundary Conditions
-    double dirichlet_constant = 1.0;
+    double dirichlet_constant = 0.0;
     std::unique_ptr<IBoundaryHandler2D> boundary = std::make_unique<BoundaryHandler2DDirichlet>(dirichlet_constant);
 
     // Define PDE
-    double heat_alpha = 0.5;
+    double heat_alpha = 1;
     std::unique_ptr<IEquationSystem> equation = std::make_unique<HeatEquationSystem>(heat_alpha);
 
     // Time integrator
     std::unique_ptr<ITimeIntegrator2D> integrator = std::make_unique<ForwardEuler2D>();
 
     // Simulation parameters
-    double dt = 0.01;
-    double total_time = 1.0;
+    double dt = 0.0005;
+    double total_time = 1;
 
     // Solver engine
     SolverEngine2D solver(*grid, *equation, *boundary, *integrator, *initial_condition, dt, total_time);
