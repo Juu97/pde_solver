@@ -49,6 +49,8 @@
         "unordered_map": "cpp",
         "iterator": "cpp",
         "memory_resource": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "iostream": "cpp",
+        "functional": "cpp"
     }
 }

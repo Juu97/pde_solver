@@ -23,32 +23,11 @@ void SolverEngine2D::run()
         boundary_->apply(rhs, *grid_, time, t);
         integrator_->step(u_, rhs, dt_, t);
 
-        // TEST CASE COMPUTATION
-        // Compute max absolute error at t+1
-        // double alpha = 1.0;
-        // double maxError = 0.0;
-
-        // for (std::size_t i = 0; i < u_.getNx(); ++i) {
-        //     for (std::size_t j = 0; j < u_.getNy(); ++j) {
-        //         Coordinates2D coord = grid_.getCoordinates(i, j);
-        //         double x = coord.x;
-        //         double y = coord.y;
-
-        //         double u_exact = std::sin(M_PI * x) * std::sin(M_PI * y) *
-        //                          std::exp(-2 * M_PI * M_PI * alpha * (t + 1) * dt_);
-
-        //         double error = std::abs(u_(i, j, t + 1) - u_exact);
-        //         if (error > maxError) {
-        //             maxError = error;
-        //         }
-        //     }
-        // }
-
-        // std::cout << "[Timestep " << t << "] Max abs error = " << maxError << "\n";
+        notifyObservers(u_, *grid_, t + 1, (t + 1) * dt_);
     }
 
     std::cout << "\n[SolverEngine2D] Simulation complete.\n";
-    exportAllStatesCSV("u_all.csv");
+    //exportAllStatesCSV("u_all.csv");
 }
 
 void SolverEngine2D::exportAllStatesCSV(const std::string& filename) const {
@@ -71,4 +50,15 @@ void SolverEngine2D::exportAllStatesCSV(const std::string& filename) const {
     std::cout << "[SolverEngine2D] All states exported to " << filename << "\n";
 
 
+}
+
+void SolverEngine2D::addObserver(std::unique_ptr<ISolverObserver> observer)
+{
+    observers_.push_back(std::move(observer));
+}
+
+void SolverEngine2D::notifyObservers(const UnknownField2D& u, const IGrid2D & grid, size_t timestep, double time) const
+{
+    for (auto& obs : observers_)
+        obs->update(u, grid, timestep, time);
 }

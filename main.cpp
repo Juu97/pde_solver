@@ -7,6 +7,7 @@
 #include "equations/HeatEquationSystem.hpp"
 #include "timeIntegrator2D/ForwardEuler2D.hpp"
 #include "SolverEngine2D.hpp"
+#include "observers/ObserverExactSolution.hpp"
 
 int main() {
     Logger::info("Executing program");
@@ -45,6 +46,14 @@ int main() {
         dt,
         total_time
     );
+
+    //Add observer - Exact solution
+    auto exact_solution = [](double x, double y, double t){
+        return std::sin(M_PI * x) * std::sin(M_PI * y) * std::exp(-2.0 * M_PI * M_PI * t);
+    };
+    std::unique_ptr<ISolverObserver> exac_solution_observer = std::make_unique<ObserverExactSolution>(std::move(exact_solution));
+
+    solver.addObserver(std::move(exac_solution_observer));
 
     // Run simulation
     solver.run();

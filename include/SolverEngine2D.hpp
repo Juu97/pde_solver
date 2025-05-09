@@ -8,6 +8,7 @@
 #include "initialConditions/InitialCondition2D.hpp"
 #include "timeIntegrator2D/ITimeIntegrator2D.hpp"
 #include "Logger.hpp"
+#include "observers/ISolverObserver.hpp"
 
 class SolverEngine2D {
 private:
@@ -21,6 +22,7 @@ private:
     std::unique_ptr<ITimeIntegrator2D> integrator_;
 
     UnknownField2D u_;
+    std::vector<std::unique_ptr<ISolverObserver>> observers_;
 
 public:
     SolverEngine2D(
@@ -48,5 +50,8 @@ public:
     void run();
     const UnknownField2D& getSolution() const {return u_;};
     void exportAllStatesCSV(const std::string& filename) const;
+    void addObserver(std::unique_ptr<ISolverObserver> observer);
+    void notifyObservers(const UnknownField2D& u, const IGrid2D & grid, size_t timestep, double time) const;
+
 
 };
