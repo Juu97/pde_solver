@@ -8,6 +8,7 @@
 #include "timeIntegrator2D/ForwardEuler2D.hpp"
 #include "SolverEngine2D.hpp"
 #include "observers/ObserverExactSolution.hpp"
+#include "observers/ObserverCsvOutput.hpp"
 
 int main() {
     Logger::info("Executing program");
@@ -34,7 +35,7 @@ int main() {
 
     // Simulation parameters
     double dt = 0.0005;
-    double total_time = 1;
+    double total_time = 0.5;
 
     // Solver engine
     SolverEngine2D solver(
@@ -54,6 +55,7 @@ int main() {
     std::unique_ptr<ISolverObserver> exac_solution_observer = std::make_unique<ObserverExactSolution>(std::move(exact_solution));
 
     solver.addObserver(std::move(exac_solution_observer));
+    solver.addObserver(std::move(std::make_unique<ObserverCsvOutput>("../python/u_data.csv")));
 
     // Run simulation
     solver.run();

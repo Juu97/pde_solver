@@ -27,30 +27,8 @@ void SolverEngine2D::run()
     }
 
     std::cout << "\n[SolverEngine2D] Simulation complete.\n";
-    //exportAllStatesCSV("u_all.csv");
 }
 
-void SolverEngine2D::exportAllStatesCSV(const std::string& filename) const {
-    std::ofstream file(filename);
-    file << "t,i,j,x,y,u\n";
-
-    const std::size_t nx = u_.getNx();
-    const std::size_t ny = u_.getNy();
-    const std::size_t nt = u_.getNt();
-
-    for (std::size_t t = 0; t < nt; ++t) {
-        for (std::size_t i = 0; i < nx; ++i) {
-            for (std::size_t j = 0; j < ny; ++j) {
-                Coordinates2D coord = grid_->getCoordinates(i, j);
-                file << t << "," << i << "," << j << "," << coord.x << "," << coord.y << "," << u_(i, j, t) << "\n";
-            }
-        }
-    }
-
-    std::cout << "[SolverEngine2D] All states exported to " << filename << "\n";
-
-
-}
 
 void SolverEngine2D::addObserver(std::unique_ptr<ISolverObserver> observer)
 {
